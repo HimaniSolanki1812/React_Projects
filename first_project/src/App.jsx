@@ -5,6 +5,7 @@ import StringState from "./CEB3012/string_state";
 import RenderCond from "./CEB3012/rander_cond";
 import ContactBook from "./CEB061/contactbook";
 import PracticeExercise1 from "./CEB081/practiceexercise1";
+import MultiPart from "./CEB1301/multipart";
 function App() {
 
   return (
@@ -17,7 +18,8 @@ function App() {
    {/* <StringState/> */}
    {/* <RenderCond/> */}
    {/* <ContactBook/> */}
-   <PracticeExercise1/>
+   {/* <PracticeExercise1/> */}
+   <MultiPart/>
     </>
   )
 }
