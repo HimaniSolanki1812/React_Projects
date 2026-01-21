@@ -8,6 +8,8 @@ import PracticeExercise1 from "./CEB081/practiceexercise1";
 import MultiPart from "./CEB1301/multipart";
 import Hook1Example from "./CEB2001/hook1";
 import Hook2Example from "./CEB2001/hook2";
+import UseState3 from "./CEB2101/UseState3";
+import Todo from "./CEB2101/todolist";
 function App() {
 
   return (
@@ -23,7 +25,9 @@ function App() {
    {/* <PracticeExercise1/> */}
    {/* <MultiPart/> */}
    {/* <Hook1Example/> */}
-   <Hook2Example/>
+   {/* <Hook2Example/> */}
+   {/* <UseState3/> */}
+   <Todo/>
     </>
   )
 }
