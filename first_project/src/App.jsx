@@ -6,6 +6,8 @@ import RenderCond from "./CEB3012/rander_cond";
 import ContactBook from "./CEB061/contactbook";
 import PracticeExercise1 from "./CEB081/practiceexercise1";
 import MultiPart from "./CEB1301/multipart";
+import Hook1Example from "./CEB2001/hook1";
+import Hook2Example from "./CEB2001/hook2";
 function App() {
 
   return (
@@ -19,7 +21,9 @@ function App() {
    {/* <RenderCond/> */}
    {/* <ContactBook/> */}
    {/* <PracticeExercise1/> */}
-   <MultiPart/>
+   {/* <MultiPart/> */}
+   {/* <Hook1Example/> */}
+   <Hook2Example/>
     </>
   )
 }
