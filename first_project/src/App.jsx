@@ -10,6 +10,7 @@ import Hook1Example from "./CEB2001/hook1";
 import Hook2Example from "./CEB2001/hook2";
 import UseState3 from "./CEB2101/UseState3";
 import Todo from "./CEB2101/todolist";
+import ContactBook_function_base from "./CEB27012026/contactbook_function_base";
 function App() {
 
   return (
@@ -27,7 +28,8 @@ function App() {
    {/* <Hook1Example/> */}
    {/* <Hook2Example/> */}
    {/* <UseState3/> */}
-   <Todo/>
+   {/* <Todo/> */}
+   <ContactBook_function_base/>
     </>
   )
 }
