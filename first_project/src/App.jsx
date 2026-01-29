@@ -11,6 +11,7 @@ import Hook2Example from "./CEB2001/hook2";
 import UseState3 from "./CEB2101/UseState3";
 import Todo from "./CEB2101/todolist";
 import ContactBook_function_base from "./CEB27012026/contactbook_function_base";
+import RegistrationForm from "./CEB29012026/RegistrationForm";
 function App() {
 
   return (
@@ -29,7 +30,8 @@ function App() {
    {/* <Hook2Example/> */}
    {/* <UseState3/> */}
    {/* <Todo/> */}
-   <ContactBook_function_base/>
+   {/* <ContactBook_function_base/> */}
+   <RegistrationForm/>
     </>
   )
 }
