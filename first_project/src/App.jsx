@@ -12,6 +12,7 @@ import UseState3 from "./CEB2101/UseState3";
 import Todo from "./CEB2101/todolist";
 import ContactBook_function_base from "./CEB27012026/contactbook_function_base";
 import RegistrationForm from "./CEB29012026/RegistrationForm";
+import Exercise from "./CEB10022026/exercise";
 function App() {
 
   return (
@@ -31,7 +32,8 @@ function App() {
    {/* <UseState3/> */}
    {/* <Todo/> */}
    {/* <ContactBook_function_base/> */}
-   <RegistrationForm/>
+   {/* <RegistrationForm/> */}
+   <Exercise/>
     </>
   )
 }
