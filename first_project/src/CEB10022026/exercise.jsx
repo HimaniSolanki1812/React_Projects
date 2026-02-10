@@ -15,7 +15,8 @@
 
 import React, { useState } from "react";
 
-const Exercise = () => {
+function CartTheme() {
+  // -------- THEME --------
   const [darkMode, setDarkMode] = useState(false);
 
   const themeStyles = {
@@ -26,166 +27,117 @@ const Exercise = () => {
     textAlign: "center",
   };
 
+  // -------- ITEMS --------
+  const items = [
+    { id: "item1", name: "Coffee", price: 2.5 },
+    { id: "item2", name: "Tea", price: 2.0 },
+    { id: "item3", name: "Croissant", price: 3.0 },
+    { id: "item4", name: "Muffin", price: 4.5 },
+  ];
+
+  // -------- SELECT ITEM --------
+  const [selectedItem, setSelectedItem] = useState(items[0]);
+  const [qty, setQty] = useState(1);
+  const [total, setTotal] = useState(items[0].price);
+
   // -------- CART --------
-  const [cart, setCart] = useState([]);
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
+  const [cartItems, setCartItems] = useState([]);
 
-  // Store edited values for each row
-  const [editedItem, setEditedItem] = useState({});
-
-  // -------- ADD ITEM --------
-  const addItem = () => {
-    if (!name || !price || !quantity) {
-      alert("Fill all fields");
-      return;
-    }
-
-    setCart([
-      ...cart,
-      {
-        name,
-        price: parseFloat(price),
-        quantity: parseInt(quantity),
-      },
-    ]);
-
-    setName("");
-    setPrice("");
-    setQuantity("");
+  const handleSelectionChange = (id) => {
+    const item = items.find((i) => i.id === id);
+    setSelectedItem(item);
+    setTotal(item.price * qty);
   };
 
-  // -------- HANDLE EDIT CHANGE --------
-  const handleEditChange = (index, field, value) => {
-    setEditedItem({
-      ...editedItem,
-      [index]: {
-        ...editedItem[index],
-        [field]: value,
-      },
-    });
+  const handleQtyChange = (e) => {
+    const value = Number(e.target.value);
+    setQty(value);
+    setTotal(selectedItem.price * value);
   };
 
-  // -------- UPDATE ITEM --------
-  const updateItem = (index) => {
-    const updated = editedItem[index];
+  const addToCart = () => {
+    const newItem = {
+      ...selectedItem,
+      qty,
+      cart_id: Date.now(),
+    };
+    setCartItems((prev) => [...prev, newItem]);
+  };
 
-    if (!updated) {
-      alert("No changes made");
-      return;
-    }
-
-    setCart((prev) =>
-      prev.map((item, i) =>
-        i === index
-          ? {
-              name: updated.name || item.name,
-              price: parseFloat(updated.price) || item.price,
-              quantity: parseInt(updated.quantity) || item.quantity,
-            }
-          : item
-      )
+  const removeItem = (cart_id) => {
+    setCartItems((prev) =>
+      prev.filter((item) => item.cart_id !== cart_id)
     );
   };
 
-  // -------- REMOVE --------
-  const removeItem = (index) => {
-    setCart(cart.filter((_, i) => i !== index));
-  };
-  // -------- CLEAR CART --------
   const clearCart = () => {
-    setCart([]);
-    setEditedItem({});
+    setCartItems([]);
   };
 
   // -------- TOTALS --------
-  const subtotal = cart.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+  const subtotal = cartItems.reduce(
+    (sum, item) => sum + item.price * item.qty,
     0
   );
   const tax = subtotal * 0.1;
-  const total = subtotal + tax;
+  const grandTotal = subtotal + tax;
 
   return (
     <div style={themeStyles}>
-      {/* THEME SWITCHER */}
       <h2>Theme Switcher</h2>
       <button onClick={() => setDarkMode(!darkMode)}>
         Switch to {darkMode ? "Light" : "Dark"} Mode
       </button>
-      <h3>Current Theme: {darkMode ? "Dark" : "Light"}</h3>
 
       <hr />
 
-      {/* ADD ITEM */}
-      <h2>Shopping Cart</h2>
-      <input
-        placeholder="Item Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        type="number"
-        placeholder="Price"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-      />
-      <input
-        type="number"
-        placeholder="Quantity"
-        value={quantity}
-        onChange={(e) => setQuantity(e.target.value)}
-      />
-      <button onClick={addItem}>Add Item</button>
+      <h2>Select Item</h2>
+      <select
+        value={selectedItem.id}
+        onChange={(e) => handleSelectionChange(e.target.value)}
+      >
+        {items.map((item) => (
+          <option key={item.id} value={item.id}>
+            {item.name} - ${item.price}
+          </option>
+        ))}
+      </select>
 
-      {/* TABLE */}
-      <table border="1" cellPadding="8" style={{ width: "100%", marginTop: "20px" }}>
+      <br /><br />
+
+      <input
+        type="number"
+        min="1"
+        value={qty}
+        onChange={handleQtyChange}
+      />
+
+      <h3>Item Total: ${total.toFixed(2)}</h3>
+
+      <button onClick={addToCart}>Add To Cart</button>
+
+      <hr />
+
+      <h2>Cart Items</h2>
+      <table border="1" cellPadding="8" style={{ width: "100%" }}>
         <thead>
           <tr>
             <th>Name</th>
             <th>Price</th>
-            <th>Quantity</th>
+            <th>Qty</th>
             <th>Total</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {cart.map((item, index) => (
-            <tr key={index}>
+          {cartItems.map((item) => (
+            <tr key={item.cart_id}>
+              <td>{item.name}</td>
+              <td>${item.price}</td>
+              <td>{item.qty}</td>
+              <td>${(item.price * item.qty).toFixed(2)}</td>
               <td>
-                <input
-                  defaultValue={item.name}
-                  onChange={(e) =>
-                    handleEditChange(index, "name", e.target.value)
-                  }
-                />
-              </td>
-              <td>
-                <input
-                  type="number"
-                  defaultValue={item.price}
-                  onChange={(e) =>
-                    handleEditChange(index, "price", e.target.value)
-                  }
-                />
-              </td>
-              <td>
-                <input
-                  type="number"
-                  defaultValue={item.quantity}
-                  onChange={(e) =>
-                    handleEditChange(index, "quantity", e.target.value)
-                  }
-                />
-              </td>
-              <td>{item.price * item.quantity}</td>
-              <td>
-                <button onClick={() => updateItem(index)}>Update</button>
-                <button
-                  onClick={() => removeItem(index)}
-                  style={{ marginLeft: "8px" }}
-                >
+                <button onClick={() => removeItem(item.cart_id)}>
                   Remove
                 </button>
               </td>
@@ -194,16 +146,16 @@ const Exercise = () => {
         </tbody>
       </table>
 
-      {/* TOTALS */}
-      <h3>Subtotal: {subtotal.toFixed(2)}</h3>
-      <h3>Tax (10%): {tax.toFixed(2)}</h3>
-      <h2>Total: {total.toFixed(2)}</h2>
+      <hr />
 
-            {/* -------- CLEAR CART -------- */}
+      <h3>Subtotal: ${subtotal.toFixed(2)}</h3>
+      <h3>Tax (10%): ${tax.toFixed(2)}</h3>
+      <h2>Grand Total: ${grandTotal.toFixed(2)}</h2>
+
       <button
         onClick={clearCart}
         style={{
-          marginTop: "15px",
+          marginTop: "10px",
           padding: "8px 15px",
           backgroundColor: "red",
           color: "white",
@@ -211,12 +163,10 @@ const Exercise = () => {
           cursor: "pointer",
         }}
       >
-        Clear Entire Cart
+        Clear Cart
       </button>
-
     </div>
-    
   );
-};
+}
 
-export default Exercise;
+export default CartTheme;
